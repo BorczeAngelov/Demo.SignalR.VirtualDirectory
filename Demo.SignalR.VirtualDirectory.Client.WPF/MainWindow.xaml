@@ -9,6 +9,7 @@
         Height="450"
         Width="800">
     <Grid>
-
+        <Button Content="Connect"
+                Click="Button_Click" />
     </Grid>
 </Window>
