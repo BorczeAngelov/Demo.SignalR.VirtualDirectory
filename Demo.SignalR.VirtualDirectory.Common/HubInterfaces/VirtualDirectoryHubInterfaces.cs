@@ -40,7 +40,7 @@ namespace Demo.SignalR.VirtualDirectory.Common.HubInterfaces
 
         //event Action<> StartingValuesLoaded;
 
-        IVirtualDirectoryHub ServerHub { get; }
+        IVirtualDirectoryHub ServerHubProxy { get; }
 
         Task ConnectWithServerHub();
     }
