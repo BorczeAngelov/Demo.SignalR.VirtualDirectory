@@ -1,6 +1,7 @@
 ﻿using Demo.SignalR.VirtualDirectory.Common.DataModel;
 using Demo.SignalR.VirtualDirectory.Common.HubInterfaces;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Threading.Tasks;
 
 namespace Demo.SignalR.VirtualDirectory.Server.SignalRHubs
@@ -9,7 +10,8 @@ namespace Demo.SignalR.VirtualDirectory.Server.SignalRHubs
     {
         public async Task CreateFile()
         {
-            await Clients.All.SendAsync(nameof(IVirtualDirectoryHubClient.InvokeCreateFile));
+            var file = new File() { ObjectKey = Guid.NewGuid() };
+            await Clients.All.SendAsync(nameof(IVirtualDirectoryHubClient.InvokeCreateFile), file);
         }
 
         public async Task UpdateFile(File file)
@@ -25,7 +27,8 @@ namespace Demo.SignalR.VirtualDirectory.Server.SignalRHubs
 
         public async Task CreateFolder()
         {
-            await Clients.All.SendAsync(nameof(IVirtualDirectoryHubClient.InvokeCreateFolder));
+            var folder = new Folder() { ObjectKey = Guid.NewGuid() };
+            await Clients.All.SendAsync(nameof(IVirtualDirectoryHubClient.InvokeCreateFolder), folder);
         }
 
         public async Task UpdateFolder(Folder folder)
