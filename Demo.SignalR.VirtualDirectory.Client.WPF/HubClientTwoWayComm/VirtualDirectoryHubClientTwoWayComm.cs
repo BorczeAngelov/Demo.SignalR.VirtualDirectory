@@ -30,7 +30,7 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.HubClientTwoWayComm
             _connection.On<File>(nameof(InvokeDeleteFile), InvokeDeleteFile);
             _connection.On<Folder>(nameof(InvokeCreateFolder), InvokeCreateFolder);
             _connection.On<Folder>(nameof(InvokeUpdateFolder), InvokeUpdateFolder);
-            _connection.On<Folder>(nameof(InvokeDeleteFolder), InvokeDeleteFolder);
+            _connection.On<Folder>(nameof(InvokeDeleteFolder), InvokeDeleteFolder);            
 
             ServerHubProxy = new ServerHubProxyImp(_connection);
         }
