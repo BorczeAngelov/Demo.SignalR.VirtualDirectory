@@ -15,12 +15,16 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
             _virtualDirectoryHubClientTwoWayComm.FileCreated += OnFileCreated;
             _virtualDirectoryHubClientTwoWayComm.FolderCreated += OnFolderCreated;
 
+            ExplorerVM = new ExplorerVM(FileCollection, FolderCollection);
+
             CreateFileCommand = new DelegateCommand(async (arg) => await _virtualDirectoryHubClientTwoWayComm.ServerHubProxy.CreateFile());
             CreateFolderCommand = new DelegateCommand(async (arg) => await _virtualDirectoryHubClientTwoWayComm.ServerHubProxy.CreateFolder());
         }
 
+        public ExplorerVM ExplorerVM { get; }
         public ObservableCollection<FileVM> FileCollection { get; } = new ObservableCollection<FileVM>();
         public ObservableCollection<FolderVM> FolderCollection { get; } = new ObservableCollection<FolderVM>();
+
         public DelegateCommand CreateFileCommand { get; }
         public DelegateCommand CreateFolderCommand { get; }
 

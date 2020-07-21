@@ -1,10 +1,9 @@
-﻿using Demo.SignalR.VirtualDirectory.Client.WPF.Utils;
-using Demo.SignalR.VirtualDirectory.Common.DataModel;
+﻿using Demo.SignalR.VirtualDirectory.Common.DataModel;
 using Demo.SignalR.VirtualDirectory.Common.HubInterfaces;
 
 namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 {
-    public class FolderVM : ObservableBase
+    public class FolderVM : EditableItemBaseVM
     {
         private Folder _folder;
         private IVirtualDirectoryHubClientTwoWayComm _virtualDirectoryHubClientTwoWayComm;

@@ -9,30 +9,29 @@
         Title="MainWindow"
         Height="450"
         Width="800">
-    <Grid>
-        <StackPanel>
-            <Button Content="Connect"
-                    Command="{Binding ConnectCommand}"
-                    HorizontalAlignment="Left"
-                    Margin="5" />
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Connect and Start"
+                      Command="{Binding ConnectCommand}" />
+        </Menu>
 
-            <view:VirtualDirectoryView DataContext="{Binding VirtualDirectoryVM}">
-                <view:VirtualDirectoryView.Style>
-                    <Style TargetType="view:VirtualDirectoryView">
-                        <Setter Property="IsEnabled"
-                                Value="True" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
-                                         Value="{x:Null}">
-                                <Setter Property="IsEnabled"
-                                        Value="False" />
-                            </DataTrigger>
-                        </Style.Triggers>
+        <view:VirtualDirectoryView DataContext="{Binding VirtualDirectoryVM}">
+            <view:VirtualDirectoryView.Style>
+                <Style TargetType="view:VirtualDirectoryView">
+                    <Setter Property="IsEnabled"
+                            Value="True" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
+                                     Value="{x:Null}">
+                            <Setter Property="IsEnabled"
+                                    Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
 
-                    </Style>
-                </view:VirtualDirectoryView.Style>
-            </view:VirtualDirectoryView>
+                </Style>
+            </view:VirtualDirectoryView.Style>
+        </view:VirtualDirectoryView>
 
-        </StackPanel>
-    </Grid>
+
+    </DockPanel>
 </Window>
