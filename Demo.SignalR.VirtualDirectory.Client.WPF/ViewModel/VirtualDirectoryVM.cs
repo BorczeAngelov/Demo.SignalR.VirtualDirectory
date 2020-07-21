@@ -17,8 +17,8 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 
             ExplorerVM = new ExplorerVM(FileCollection, FolderCollection);
 
-            CreateFileCommand = new DelegateCommand(async (arg) => await _virtualDirectoryHubClientTwoWayComm.ServerHubProxy.CreateFile());
-            CreateFolderCommand = new DelegateCommand(async (arg) => await _virtualDirectoryHubClientTwoWayComm.ServerHubProxy.CreateFolder());
+            CreateFileCommand = new DelegateCommand(CreateFile);
+            CreateFolderCommand = new DelegateCommand(CreateFolder);
         }
 
         public ExplorerVM ExplorerVM { get; }
@@ -27,6 +27,16 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 
         public DelegateCommand CreateFileCommand { get; }
         public DelegateCommand CreateFolderCommand { get; }
+
+        private async void CreateFile(object arg)
+        {
+            await _virtualDirectoryHubClientTwoWayComm.ServerHubProxy.CreateFile();
+        }
+
+        private async void CreateFolder(object arg)
+        {
+            await _virtualDirectoryHubClientTwoWayComm.ServerHubProxy.CreateFile();
+        }
 
         private void OnFileCreated(File file)
         {
