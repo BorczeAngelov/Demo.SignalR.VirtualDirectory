@@ -4,12 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Demo.SignalR.VirtualDirectory.Client.WPF"
+        xmlns:view="clr-namespace:Demo.SignalR.VirtualDirectory.Client.WPF.View"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="450"
         Width="800">
     <Grid>
-        <Button Content="Connect"
-                Click="Button_Click" />
+        <StackPanel>
+            <Button Content="Connect"
+                    Command="{Binding ConnectCommand}"
+                    HorizontalAlignment="Left"
+                    Margin="5" />
+
+            <view:VirtualDirectoryView DataContext="{Binding VirtualDirectoryVM}">
+                <view:VirtualDirectoryView.Style>
+                    <Style TargetType="view:VirtualDirectoryView">
+                        <Setter Property="IsEnabled"
+                                Value="True" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
+                                         Value="{x:Null}">
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </view:VirtualDirectoryView.Style>
+            </view:VirtualDirectoryView>
+
+        </StackPanel>
     </Grid>
 </Window>
