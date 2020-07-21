@@ -54,17 +54,20 @@
                    LastChildFill="False">
 
             <Button Content="Delete"
+                    Command="{Binding DeleteCommand}"
                     Width="80"
                     HorizontalAlignment="Center"
                     Margin="5" />
 
-            <Button Content="Save Changes"
+            <Button Content="Save"
+                    Command="{Binding SaveCommand}"
                     DockPanel.Dock="Right"
                     Width="80"
                     HorizontalAlignment="Center"
                     Margin="5" />
 
             <Button Content="Cancel"
+                    Command="{Binding CancelCommand}"
                     DockPanel.Dock="Right"
                     Width="80"
                     HorizontalAlignment="Center"
