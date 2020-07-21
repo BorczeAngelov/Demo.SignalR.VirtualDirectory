@@ -7,13 +7,31 @@
         xmlns:view="clr-namespace:Demo.SignalR.VirtualDirectory.Client.WPF.View"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="450"
-        Width="800">
+        MinHeight="350"
+        MinWidth="500"
+        Height="350"
+        Width="500">        
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Connect and Start"
-                      Command="{Binding ConnectCommand}" />
-        </Menu>
+        <DockPanel DockPanel.Dock="Top">
+            <DockPanel.Style>
+                <Style TargetType="DockPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsConnected}"
+                                     Value="True">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>
+            
+            <Button Content="Connect and Start"
+                      Command="{Binding ConnectCommand}" 
+                    Width="120"
+                    Margin="3"/>
+            <TextBlock Text="(Tip: Make sure server is running)"
+                      VerticalAlignment="Center"/>
+        </DockPanel>
 
         <view:VirtualDirectoryView DataContext="{Binding VirtualDirectoryVM}">
             <view:VirtualDirectoryView.Style>
@@ -31,7 +49,5 @@
                 </Style>
             </view:VirtualDirectoryView.Style>
         </view:VirtualDirectoryView>
-
-
     </DockPanel>
 </Window>

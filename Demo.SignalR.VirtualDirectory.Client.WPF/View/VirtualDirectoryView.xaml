@@ -4,13 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Demo.SignalR.VirtualDirectory.Client.WPF.View"
-             xmlns:editItem="clr-namespace:Demo.SignalR.VirtualDirectory.Client.WPF.View.EditItem"
+             
              mc:Ignorable="d"
+             Background="White"
              d:DesignHeight="450"
              d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -41,7 +43,14 @@
                                 Grid.Row="1" />
         </Grid>
 
-        <editItem:EditItemView DataContext="{Binding ExplorerVM.SelectedItem}"
-                               Grid.Column="1" />
+        <GridSplitter Grid.Column="1"
+                      IsEnabled="False"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch" />
+
+        <Grid Grid.Column="2">
+            <local:SelectedItemView DataContext="{Binding ExplorerVM.SelectedItem}" />
+        </Grid>
+
     </Grid>
 </UserControl>
