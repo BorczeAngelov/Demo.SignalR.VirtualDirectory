@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Demo.SignalR.VirtualDirectory.Client.WPF.Utils
 {
-    internal class DelegateCommand : ICommand
+    public class DelegateCommand : ICommand
     {
         private readonly Predicate<object> _canExecute;
         private readonly Action<object> _execute;
