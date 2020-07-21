@@ -35,7 +35,7 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 
         private async void CreateFolder(object arg)
         {
-            await _virtualDirectoryHubClientTwoWayComm.ServerHubProxy.CreateFile();
+            await _virtualDirectoryHubClientTwoWayComm.ServerHubProxy.CreateFolder();
         }
 
         private void OnFileCreated(File file)
