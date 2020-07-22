@@ -2,6 +2,8 @@
 using Demo.SignalR.VirtualDirectory.Common.DataModel;
 using Demo.SignalR.VirtualDirectory.Common.HubInterfaces;
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 {
@@ -10,14 +12,17 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
         private File _file;
 
         private string _name;
-        private Guid _folderObjectKey;
+        private FolderVM _parentFolder;
 
-        public FileVM(
+        internal FileVM(
             File file,
-            IVirtualDirectoryHubClientTwoWayComm virtualDirectoryHubClientTwoWayComm) : base(virtualDirectoryHubClientTwoWayComm)
+            IVirtualDirectoryHubClientTwoWayComm virtualDirectoryHubClientTwoWayComm,
+            ObservableCollection<FolderVM> folderCollection) : base(virtualDirectoryHubClientTwoWayComm)
         {
             _file = file;
             VirtualDirectoryHubClientTwoWayComm.FileUpdated += UpdateData;
+            FolderCollection = folderCollection;
+
             DeleteCommand = new DelegateCommand(Delete);
             SaveCommand = new DelegateCommand(Save, arg => IsModified);
 
@@ -26,6 +31,7 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 
         public override DelegateCommand SaveCommand { get; }
         public override DelegateCommand DeleteCommand { get; }
+        public ObservableCollection<FolderVM> FolderCollection { get; }
 
         public string Name
         {
@@ -40,14 +46,14 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
             }
         }
 
-        public Guid FolderObjectKey
+        public FolderVM ParentFolder
         {
-            get => _folderObjectKey;
+            get => _parentFolder;
             set
             {
-                if (_folderObjectKey != value)
+                if (_parentFolder != value)
                 {
-                    _folderObjectKey = value;
+                    _parentFolder = value;
                     OnPropertyChanged();
                 }
             }
@@ -56,7 +62,7 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
         protected override void CopyDataFromDataModel()
         {
             Name = _file.Name;
-            FolderObjectKey = _file.FolderObjectKey;
+            ParentFolder = FolderCollection.FirstOrDefault(x => x.ObjectKey == _file.FolderObjectKey);
             IsModified = false;
         }
 
@@ -73,7 +79,7 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
         private async void Save(object obj)
         {
             _file.Name = Name;
-            _file.FolderObjectKey = FolderObjectKey;            
+            _file.FolderObjectKey = (ParentFolder != null) ? ParentFolder.ObjectKey : Guid.Empty;
             await VirtualDirectoryHubClientTwoWayComm.ServerHubProxy.UpdateFile(_file);
         }
 

@@ -8,6 +8,8 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 {
     public class VirtualDirectoryVM : ObservableBase
     {
+        private readonly ObservableCollection<FileVM> _fileCollection  = new ObservableCollection<FileVM>();
+        private readonly ObservableCollection<FolderVM> _folderCollection  = new ObservableCollection<FolderVM>();
         private IVirtualDirectoryHubClientTwoWayComm _virtualDirectoryHubClientTwoWayComm;
 
         public VirtualDirectoryVM(IVirtualDirectoryHubClientTwoWayComm virtualDirectoryHubClientTwoWayComm)
@@ -19,15 +21,13 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
             _virtualDirectoryHubClientTwoWayComm.FolderCreated += OnFolderCreated;
             _virtualDirectoryHubClientTwoWayComm.FolderDeleted += OnFolderDeleted;
 
-            ExplorerVM = new ExplorerVM(FileCollection, FolderCollection);
+            ExplorerVM = new ExplorerVM(_fileCollection, _folderCollection);
 
             CreateFileCommand = new DelegateCommand(CreateFile);
             CreateFolderCommand = new DelegateCommand(CreateFolder);
         }
 
         public ExplorerVM ExplorerVM { get; }
-        public ObservableCollection<FileVM> FileCollection { get; } = new ObservableCollection<FileVM>();
-        public ObservableCollection<FolderVM> FolderCollection { get; } = new ObservableCollection<FolderVM>();
 
         public DelegateCommand CreateFileCommand { get; }
         public DelegateCommand CreateFolderCommand { get; }
@@ -44,31 +44,31 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 
         private void OnFileCreated(File file)
         {
-            var fileVM = new FileVM(file, _virtualDirectoryHubClientTwoWayComm);
-            FileCollection.Add(fileVM);
+            var fileVM = new FileVM(file, _virtualDirectoryHubClientTwoWayComm, _folderCollection);
+            _fileCollection.Add(fileVM);
         }
 
         private void OnFileDeleted(File file)
         {
-            var fileVM = FileCollection.FirstOrDefault(x => x.HasDataModelWithObjectKey(file.ObjectKey));
+            var fileVM = _fileCollection.FirstOrDefault(x => x.HasDataModelWithObjectKey(file.ObjectKey));
             if (fileVM != null)
             {
-                FileCollection.Remove(fileVM);
+                _fileCollection.Remove(fileVM);
             }
         }
 
         private void OnFolderCreated(Folder folder)
         {
-            var folderVM = new FolderVM(folder, _virtualDirectoryHubClientTwoWayComm);
-            FolderCollection.Add(folderVM);
+            var folderVM = new FolderVM(folder, _virtualDirectoryHubClientTwoWayComm, _folderCollection);
+            _folderCollection.Add(folderVM);
         }
 
         private void OnFolderDeleted(Folder folder)
         {
-            var folderVM = FolderCollection.FirstOrDefault(x => x.HasDataModelWithObjectKey(folder.ObjectKey));
+            var folderVM = _folderCollection.FirstOrDefault(x => x.HasDataModelWithObjectKey(folder.ObjectKey));
             if (folderVM != null)
             {
-                FolderCollection.Remove(folderVM);
+                _folderCollection.Remove(folderVM);
             }
         }
     }

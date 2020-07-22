@@ -36,7 +36,10 @@
                    Grid.Column="0"
                    Grid.Row="2" />
 
-        <ComboBox Text="{Binding FolderObjectKey}"
+        <ComboBox ItemsSource="{Binding FolderCollection}"
+                  DisplayMemberPath="Name"
+                  SelectedItem="{Binding ParentFolder}"
+                  IsSynchronizedWithCurrentItem="True"
                   Grid.Column="2"
                   Grid.Row="2" />
 
