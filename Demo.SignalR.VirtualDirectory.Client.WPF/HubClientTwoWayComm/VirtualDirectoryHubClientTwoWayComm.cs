@@ -73,6 +73,8 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.HubClientTwoWayComm
             FolderDeleted?.Invoke(folder);
         }
 
+        #region private class ServerHubProxyImp
+
         private class ServerHubProxyImp : IVirtualDirectoryHub
         {
             private readonly HubConnection _connection;
@@ -113,5 +115,6 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.HubClientTwoWayComm
                 return _connection.InvokeAsync(nameof(DeleteFolder), folder);
             }
         }
+        #endregion
     }
 }
