@@ -4,6 +4,7 @@ using Demo.SignalR.VirtualDirectory.Common.HubInterfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 {
@@ -24,7 +25,7 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
             FolderCollection = folderCollection;
 
             DeleteCommand = new DelegateCommand(Delete);
-            SaveCommand = new DelegateCommand(Save, arg => IsModified);
+            SaveCommand = new DelegateCommand(Save, arg => IsModified && !HasErrors);
 
             CopyDataFromDataModel();
         }
@@ -54,6 +55,7 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
                 if (_parentFolder != value)
                 {
                     _parentFolder = value;
+                    ValidateParentFolder();
                     OnPropertyChanged();
                 }
             }
@@ -63,6 +65,8 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
         {
             Name = _file.Name;
             ParentFolder = FolderCollection.FirstOrDefault(x => x.ObjectKey == _file.FolderObjectKey);
+
+            CommandManager.InvalidateRequerySuggested(); //Bugfix: https://social.msdn.microsoft.com/Forums/vstudio/en-US/86986dbd-6af9-41f8-9ddf-d0749877c2ef/background-thread-canexecute-changes?forum=wpf
             IsModified = false;
         }
 
@@ -87,9 +91,19 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
         {
             if (_file.ObjectKey == updatedFile.ObjectKey)
             {
-                //You can invoke a messageBox here
+                //Note: You can invoke a messageBox here
                 _file = updatedFile;
                 CopyDataFromDataModel();
+            }
+        }
+
+        private void ValidateParentFolder()
+        {
+            ClearErrors(nameof(ParentFolder));
+            if (ParentFolder == null)
+            {
+                var error = "File must belong to a folder";
+                AddError(nameof(ParentFolder), error);
             }
         }
     }

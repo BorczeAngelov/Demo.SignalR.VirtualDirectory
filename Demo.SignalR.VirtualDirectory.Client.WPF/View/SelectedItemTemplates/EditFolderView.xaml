@@ -32,14 +32,14 @@
                  Grid.Column="2"
                  Grid.Row="0" />
 
-        <TextBlock Text="Parent Folder"
+        <TextBlock Text="Belongs to Folder"
                    Grid.Column="0"
                    Grid.Row="2" />
 
         <ComboBox ItemsSource="{Binding FolderCollection}"
                   DisplayMemberPath="Name"
-                  SelectedItem="{Binding ParentFolder}"
-                  IsSynchronizedWithCurrentItem="True"
+                  SelectedItem="{Binding ParentFolder, ValidatesOnNotifyDataErrors=True}"
+                  IsSynchronizedWithCurrentItem="True"                  
                   Grid.Column="2"
                   Grid.Row="2" />
 

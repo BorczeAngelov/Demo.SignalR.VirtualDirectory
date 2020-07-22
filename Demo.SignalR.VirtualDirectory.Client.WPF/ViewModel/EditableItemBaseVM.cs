@@ -5,9 +5,9 @@ using System.ComponentModel;
 
 namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 {
-    public abstract class EditableItemBaseVM : ObservableBase
+    public abstract class EditableItemBaseVM : ObservableAndValidationalBase
     {
-        private bool _name;
+        private bool _isModified;
         protected IVirtualDirectoryHubClientTwoWayComm VirtualDirectoryHubClientTwoWayComm { get; }
 
         protected EditableItemBaseVM(IVirtualDirectoryHubClientTwoWayComm virtualDirectoryHubClientTwoWayComm)
@@ -16,6 +16,7 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
             CancelCommand = new DelegateCommand(Cancel, arg => IsModified);
 
             PropertyChanged += WhenAnyPropertyIsChangedMarkAsModified;
+            PropertyChanged += WhenHasErrorsChangedRefreshSaveCommand;
         }
 
         public Type Type { get => GetType(); }
@@ -26,12 +27,12 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
 
         public bool IsModified
         {
-            get => _name;
+            get => _isModified;
             protected set
             {
-                if (_name != value)
+                if (_isModified != value)
                 {
-                    _name = value;
+                    _isModified = value;
                     OnPropertyChanged();
                     CancelCommand.RaiseCanExecuteChanged();
                     SaveCommand.RaiseCanExecuteChanged();
@@ -44,6 +45,14 @@ namespace Demo.SignalR.VirtualDirectory.Client.WPF.ViewModel
             if (e.PropertyName != nameof(IsModified))
             {
                 IsModified = true;
+            }
+        }
+
+        private void WhenHasErrorsChangedRefreshSaveCommand(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(HasErrors))
+            {
+                SaveCommand.RaiseCanExecuteChanged();
             }
         }
 
